@@ -22,6 +22,7 @@ on:
       - v*
     branches:
       - main
+      - feat/*
   pull_request:
 jobs:
   migration-script-lint:

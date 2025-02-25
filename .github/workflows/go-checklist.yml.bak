@@ -18,7 +18,7 @@
 name: Go-checklist
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ feat/* ]
     paths:
       - ".github/workflows/*.yml"
       - "**.go"

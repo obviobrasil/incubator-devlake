@@ -28,6 +28,7 @@ on:
       - release-*
       - feat-*
       - bugfix-*
+      - feat/*
 
 jobs:
   build-and-push-builder:
