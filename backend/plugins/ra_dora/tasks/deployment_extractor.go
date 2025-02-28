@@ -1,0 +1,61 @@
+package tasks
+
+import (
+	"encoding/json"
+	"log"
+
+	"github.com/apache/incubator-devlake/core/errors"
+	"github.com/apache/incubator-devlake/core/plugin"
+	"github.com/apache/incubator-devlake/helpers/pluginhelper/api"
+	"github.com/apache/incubator-devlake/plugins/ra_dora/models"
+)
+
+var _ plugin.SubTaskEntryPoint = ExtractDeployments
+
+func init() {
+	RegisterSubtaskMeta(&ExtractDeploymentsMeta)
+}
+
+// Task metadata
+var ExtractDeploymentsMeta = plugin.SubTaskMeta{
+	Name:             "extract_deployments",
+	EntryPoint:       ExtractDeployments,
+	EnabledByDefault: true,
+	DomainTypes:      []string{plugin.DOMAIN_TYPE_CICD},
+	DependencyTables: []string{},
+	ProductTables:    []string{RAW_DEPLOYMENT_TABLE},
+}
+
+func ExtractDeployments(taskCtx plugin.SubTaskContext) errors.Error {
+	extractor, err := api.NewApiExtractor(api.ApiExtractorArgs{
+		RawDataSubTaskArgs: api.RawDataSubTaskArgs{
+			Ctx:    taskCtx,
+			Params: taskCtx.GetData(),
+			Table:  "argo_api_deployments",
+		},
+		Extract: func(row *api.RawData) ([]interface{}, errors.Error) {
+			var deployments models.Deployments
+
+			err := errors.Convert(json.Unmarshal(row.Data, &deployments))
+			if err != nil {
+				return nil, err
+			}
+
+			raDeployment := &models.Deployments{
+				ID: deployments.ID,
+			}
+
+			results := make([]interface{}, 0, 2)
+			results = append(results, raDeployment)
+
+			return results, nil
+		},
+	})
+
+	if err != nil {
+		return err
+	}
+
+	log.Println("Extração de deployments concluída com sucesso!")
+	return extractor.Execute()
+}
