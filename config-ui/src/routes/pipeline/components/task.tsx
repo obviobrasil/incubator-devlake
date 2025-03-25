@@ -61,6 +61,9 @@ export const PipelineTask = ({ task }: Props) => {
       case ['bitbucket'].includes(config.plugin):
         name = `${name}:${options.fullName}`;
         break;
+      case ['argo'].includes(config.plugin):
+        name = `${name}:${options.fullName}`;
+        break;  
       case ['tapd'].includes(config.plugin):
         name = `${name}:${options.workspaceId}`;
         break;
