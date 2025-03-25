@@ -29,6 +29,7 @@ import { JiraTransformation } from '@/plugins/register/jira';
 import { GitLabTransformation } from '@/plugins/register/gitlab';
 import { JenkinsTransformation } from '@/plugins/register/jenkins';
 import { BitbucketTransformation } from '@/plugins/register/bitbucket';
+import { ArgoTransformation } from '@/plugins/register/argo';
 import { BitbucketServerTransformation } from '@/plugins/register/bitbucket-server';
 import { AzureTransformation } from '@/plugins/register/azure';
 import { TapdTransformation } from '@/plugins/register/tapd';
@@ -216,6 +217,16 @@ export const ScopeConfigForm = ({
               {plugin === 'bitbucket' && (
                 <BitbucketTransformation
                   plugin="bitbucket"
+                  connectionId={connectionId}
+                  entities={entities}
+                  transformation={transformation}
+                  setTransformation={setTransformation}
+                />
+              )}
+
+              {plugin === 'argo' && (
+                <ArgoTransformation
+                  plugin="argo"
                   connectionId={connectionId}
                   entities={entities}
                   transformation={transformation}

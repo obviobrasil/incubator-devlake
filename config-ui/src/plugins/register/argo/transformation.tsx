@@ -37,7 +37,7 @@ interface Props {
 
 const ALL_STATES = ['new', 'open', 'resolved', 'closed', 'on hold', 'wontfix', 'duplicate', 'invalid'];
 
-export const BitbucketTransformation = ({
+export const ArgoTransformation = ({
   plugin,
   connectionId,
   entities,
