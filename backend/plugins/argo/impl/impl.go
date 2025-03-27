@@ -145,6 +145,33 @@ func (a Argo) ApiResources() map[string]map[string]plugin.ApiResourceHandler {
 			"DELETE": api.DeleteConnection,
 			"GET":    api.GetConnection,
 		},
+		"connections/:connectionId/test": {
+			"POST": api.TestExistingConnection,
+		},
+		"connections/:connectionId/scopes/:scopeId": {
+			"GET":    api.GetScope,
+			"PATCH":  api.PatchScope,
+			"DELETE": api.DeleteScope,
+		},
+		"connections/:connectionId/scopes/:scopeId/latest-sync-state": {
+			"GET": api.GetScopeLatestSyncState,
+		},
+		"connections/:connectionId/scopes": {
+			"GET": api.GetScopeList,
+			"PUT": api.PutScopes,
+		},
+		"connections/:connectionId/scope-configs": {
+			"POST": api.CreateScopeConfig,
+			"GET":  api.GetScopeConfigList,
+		},
+		"connections/:connectionId/scope-configs/:scopeConfigId": {
+			"PATCH":  api.PatchScopeConfig,
+			"GET":    api.GetScopeConfig,
+			"DELETE": api.DeleteScopeConfig,
+		},
+		"scope-config/:scopeConfigId/projects": {
+			"GET": api.GetProjectsByScopeConfig,
+		},
 	}
 }
 
