@@ -18,6 +18,7 @@ limitations under the License.
 package tasks
 
 import (
+	"fmt"
 	"math"
 	"reflect"
 	"time"
@@ -121,6 +122,13 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 
 			// Calculate PR deploy time
 			if deployment != nil && deployment.FinishedDate != nil {
+				fmt.Println("--------- RETIRAR ---------")
+				fmt.Println(deployment)
+				fmt.Println(deployment.Id)
+				fmt.Println(pr.MergeCommitSha)
+				fmt.Println(deployment.FinishedDate)
+				fmt.Println("--------- RETIRAR ---------")
+				
 				projectPrMetric.PrDeployTime = computeTimeSpan(pr.MergedDate, deployment.FinishedDate)
 				projectPrMetric.DeploymentCommitId = deployment.Id
 				projectPrMetric.PrDeployedDate = deployment.FinishedDate
