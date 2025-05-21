@@ -43,6 +43,8 @@ var CalculateChangeLeadTimeMeta = plugin.SubTaskMeta{
 
 // CalculateChangeLeadTime calculates change lead time for a project.
 func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
+	fmt.Println("--------- RETIRAR PLUGIN DORA - CHANGE LEAD TIME ---------")
+	
 	// Get instances of the DAL and logger
 	db := taskCtx.GetDal()
 	logger := taskCtx.GetLogger()
@@ -120,14 +122,21 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 				return nil, err
 			}
 
+			fmt.Println("--------- RETIRAR ---------")
+			fmt.Println(deployment)
+			fmt.Println(deployment.Id)
+			fmt.Println(deployment.CreatedDate)
+			fmt.Println(deployment.FinishedDate)
+			fmt.Println("--------- RETIRAR ---------")
+
 			// Calculate PR deploy time
 			if deployment != nil && deployment.FinishedDate != nil {
-				fmt.Println("--------- RETIRAR ---------")
+				fmt.Println("--------- RETIRAR IF ---------")
 				fmt.Println(deployment)
 				fmt.Println(deployment.Id)
 				fmt.Println(pr.MergeCommitSha)
 				fmt.Println(deployment.FinishedDate)
-				fmt.Println("--------- RETIRAR ---------")
+				fmt.Println("--------- RETIRAR IF ---------")
 				
 				projectPrMetric.PrDeployTime = computeTimeSpan(pr.MergedDate, deployment.FinishedDate)
 				projectPrMetric.DeploymentCommitId = deployment.Id
