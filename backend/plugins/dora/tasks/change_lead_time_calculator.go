@@ -116,13 +116,17 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 			projectPrMetric.PrCreatedDate = &pr.CreatedDate
 			projectPrMetric.PrMergedDate = pr.MergedDate
 
+			logger.Info("--------- RETIRAR 1 ----------")
+			logger.Info("MergeCommitSha: %v", pr.MergeCommitSha)
+			logger.Info("ProjectName: %v", data.Options.ProjectName)
+
 			// Get the deployment for the PR
 			deployment, err := getDeploymentCommit(pr.MergeCommitSha, data.Options.ProjectName, db)
 			if err != nil {
 				return nil, err
 			}
 
-			logger.Info("--------- RETIRAR ----------")
+			logger.Info("--------- RETIRAR 2 ----------")
 			logger.Info("deployment: %v", deployment)
 			logger.Info("deploymentId: %v", deployment.Id)
 			logger.Info("CreatedDate: %v", deployment.CreatedDate)
