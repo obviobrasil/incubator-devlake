@@ -43,11 +43,12 @@ var CalculateChangeLeadTimeMeta = plugin.SubTaskMeta{
 
 // CalculateChangeLeadTime calculates change lead time for a project.
 func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
-	fmt.Println("--------- RETIRAR PLUGIN DORA - CHANGE LEAD TIME ---------")
-	
 	// Get instances of the DAL and logger
 	db := taskCtx.GetDal()
 	logger := taskCtx.GetLogger()
+
+	logger.Info("--------- RETIRAR PLUGIN DORA - CHANGE LEAD TIME ---------")
+	
 	data := taskCtx.GetData().(*DoraTaskData)
 	// Clear previous results from the project
 	err := db.Exec("DELETE FROM project_pr_metrics WHERE project_name = ? ", data.Options.ProjectName)
@@ -122,21 +123,19 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 				return nil, err
 			}
 
-			fmt.Println("--------- RETIRAR ---------")
-			fmt.Println(deployment)
-			fmt.Println(deployment.Id)
-			fmt.Println(deployment.CreatedDate)
-			fmt.Println(deployment.FinishedDate)
-			fmt.Println("--------- RETIRAR ---------")
+			logger.Info("--------- RETIRAR ----------")
+			logger.Info("deployment: %v", deployment)
+			logger.Info("deploymentId: %v", deployment.Id)
+			logger.Info("CreatedDate: %v", deployment.CreatedDate)
+			logger.Info("FinishedDate: %v", deployment.FinishedDate)
 
 			// Calculate PR deploy time
 			if deployment != nil && deployment.FinishedDate != nil {
-				fmt.Println("--------- RETIRAR IF ---------")
-				fmt.Println(deployment)
-				fmt.Println(deployment.Id)
-				fmt.Println(pr.MergeCommitSha)
-				fmt.Println(deployment.FinishedDate)
-				fmt.Println("--------- RETIRAR IF ---------")
+				logger.Info("--------- RETIRAR IF ----------")
+				logger.Info("deployment: %v", deployment)
+				logger.Info("deploymentId: %v", deployment.Id)
+				logger.Info("MergedDate: %v", pr.MergedDate)
+				logger.Info("FinishedDate: %v", deployment.FinishedDate)
 				
 				projectPrMetric.PrDeployTime = computeTimeSpan(pr.MergedDate, deployment.FinishedDate)
 				projectPrMetric.DeploymentCommitId = deployment.Id
