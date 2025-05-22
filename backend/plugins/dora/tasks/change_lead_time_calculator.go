@@ -116,22 +116,22 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 			projectPrMetric.PrCreatedDate = &pr.CreatedDate
 			projectPrMetric.PrMergedDate = pr.MergedDate
 
-			logger.Info("--------- RETIRAR 1 ----------")
+			logger.Info("--------- INICIO ----------")
 			logger.Info("MergeCommitSha: %v", pr.MergeCommitSha)
 			logger.Info("ProjectName: %v", data.Options.ProjectName)
 
 			// Get the deployment for the PR
-			deployment, err := getDeploymentCommit(pr.MergeCommitSha, data.Options.ProjectName, db)
+			deployment, err := getDeploymentCommit(logger, pr.MergeCommitSha, data.Options.ProjectName, db)
 			if err != nil {
 				return nil, err
 			}
 
-			logger.Info("--------- RETIRAR 2 ----------")
+			logger.Info("--------- APÓS FUNÇÃO ----------")
 			logger.Info("deployment: %v", deployment)
 
 			// Calculate PR deploy time
 			if deployment != nil && deployment.FinishedDate != nil {
-				logger.Info("--------- RETIRAR IF ----------")
+				logger.Info("--------- ENTROU NO IF ----------")
 				logger.Info("deployment: %v", deployment)
 				logger.Info("deploymentId: %v", deployment.Id)
 				logger.Info("MergedDate: %v", pr.MergedDate)
@@ -144,7 +144,7 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 				logger.Debug("deploy time of pr %v is nil\n", pr.PullRequestKey)
 			}
 
-			logger.Info("--------- RETIRAR 3 ----------")
+			logger.Info("--------- FIM ----------")
 
 			// Calculate PR cycle time
 			var cycleTime int64
@@ -226,8 +226,14 @@ func getFirstReview(prId string, prCreator string, db dal.Dal) (*code.PullReques
 
 // getDeploymentCommit takes a merge commit SHA, a repository ID, a list of deployment pairs, and a database connection as input.
 // It returns the deployment pair related to the merge commit, or nil if not found.
-func getDeploymentCommit(mergeSha string, projectName string, db dal.Dal) (*devops.CicdDeploymentCommit, errors.Error) {
+func getDeploymentCommit(logger log.Logger, mergeSha string, projectName string, db dal.Dal) (*devops.CicdDeploymentCommit, errors.Error) {
 	deploymentCommits := make([]*devops.CicdDeploymentCommit, 0, 1)
+
+	logger.Info("--------- getDeploymentCommit ----------")
+	logger.Info("MergeSha: %v", mergeSha)
+	logger.Info("ProjectName: %v", projectName)
+	logger.Info("Result: %v", devops.RESULT_SUCCESS)
+	
 	// do not use `.First` method since gorm would append ORDER BY ID to the query which leads to a error
 	err := db.All(
 		&deploymentCommits,
@@ -243,11 +249,16 @@ func getDeploymentCommit(mergeSha string, projectName string, db dal.Dal) (*devo
 		dal.Limit(1),
 	)
 	if err != nil {
+		logger.Info("erro na query")
 		return nil, err
 	}
 	if len(deploymentCommits) == 0 {
+		logger.Info("query não trouxe resultado")
 		return nil, nil
 	}
+
+	logger.Info("DeploymentCommit: %v", deploymentCommits[0])
+	
 	return deploymentCommits[0], nil
 }
 
