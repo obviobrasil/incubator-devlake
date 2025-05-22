@@ -128,9 +128,6 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 
 			logger.Info("--------- RETIRAR 2 ----------")
 			logger.Info("deployment: %v", deployment)
-			logger.Info("deploymentId: %v", deployment.Id)
-			logger.Info("CreatedDate: %v", deployment.CreatedDate)
-			logger.Info("FinishedDate: %v", deployment.FinishedDate)
 
 			// Calculate PR deploy time
 			if deployment != nil && deployment.FinishedDate != nil {
@@ -146,6 +143,8 @@ func CalculateChangeLeadTime(taskCtx plugin.SubTaskContext) errors.Error {
 			} else {
 				logger.Debug("deploy time of pr %v is nil\n", pr.PullRequestKey)
 			}
+
+			logger.Info("--------- RETIRAR 3 ----------")
 
 			// Calculate PR cycle time
 			var cycleTime int64
