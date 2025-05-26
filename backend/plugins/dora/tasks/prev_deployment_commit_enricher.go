@@ -114,5 +114,13 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 		return err
 	}
 
+	logger := taskCtx.GetLogger()
+	logger.Info("--------- INICIO ----------")
+	logger.Info("--------- EnrichPrevSuccessDeploymentCommit ----------")
+	logger.Info("data.Options.ScopeId: %v", data.Options.ScopeId)
+	logger.Info("devops.CicdDeploymentCommit: %v", devops.CicdDeploymentCommit)
+	logger.Info("Result: %v", devops.RESULT_SUCCESS)
+	logger.Info("--------- FIM ----------")
+
 	return enricher.Execute()
 }
