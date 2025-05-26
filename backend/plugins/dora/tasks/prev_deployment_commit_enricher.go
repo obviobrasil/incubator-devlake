@@ -43,6 +43,8 @@ var EnrichPrevSuccessDeploymentCommitMeta = plugin.SubTaskMeta{
 // practice. However, if you have strong evidence to suggest otherwise, you are
 // free to file an issue on our GitHub repository.
 func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Error {
+	logger := taskCtx.GetLogger()
+	logger.Info("--------- EnrichPrevSuccessDeploymentCommit ----------")
 	db := taskCtx.GetDal()
 	data := taskCtx.GetData().(*DoraTaskData)
 	// step 1. select all successful deployments in the project and sort them by cicd_scope_id, repo_url, env
@@ -74,6 +76,8 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 		)
 	}
 
+	logger.Info("clauses: %v", clauses)
+
 	cursor, err := db.Cursor(clauses...)
 	if err != nil {
 		return err
@@ -92,6 +96,11 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 		Enrich: func(deploymentCommit *devops.CicdDeploymentCommit) ([]interface{}, errors.Error) {
 			// step 2. group them by cicd_scope_id/repo_url/env
 			// whenever cicd_scope_id/repo_url/env shifted, it is a new set of consecutive deployments
+			logger.Info("--------- enricher ----------")
+			logger.Info("prev_cicd_scope_id: %v", prev_cicd_scope_id)
+			logger.Info("prev_repo_url: %v", prev_repo_url)
+			logger.Info("prev_env: %v", prev_env)
+
 			if prev_cicd_scope_id != deploymentCommit.CicdScopeId ||
 				prev_repo_url != deploymentCommit.RepoUrl ||
 				prev_env != deploymentCommit.Environment {
@@ -108,9 +117,6 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 			prev_env = deploymentCommit.Environment
 			prev_success_deployment_id = deploymentCommit.Id
 
-			logger := taskCtx.GetLogger()
-			logger.Info("--------- INICIO ----------")
-			logger.Info("--------- EnrichPrevSuccessDeploymentCommit ----------")
 			logger.Info("data.Options.ScopeId: %v", data.Options.ScopeId)
 			logger.Info("deploymentCommit: %v", deploymentCommit)
 			logger.Info("--------- FIM ----------")
@@ -119,6 +125,7 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 		},
 	})
 	if err != nil {
+		logger.Info("--------- err ----------")
 		return err
 	}
 	return enricher.Execute()
