@@ -47,6 +47,7 @@ func EnrichPrevSuccessDeploymentCommit(taskCtx plugin.SubTaskContext) errors.Err
 	logger.Info("--------- EnrichPrevSuccessDeploymentCommit ----------")
 	db := taskCtx.GetDal()
 	data := taskCtx.GetData().(*DoraTaskData)
+	logger.Info("data: %v", data)
 	// step 1. select all successful deployments in the project and sort them by cicd_scope_id, repo_url, env
 	// and finished_date
 	var clauses = []dal.Clause{
