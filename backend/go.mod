@@ -6,7 +6,7 @@ require (
 	github.com/cockroachdb/errors v1.11.1
 	github.com/gin-contrib/cors v1.6.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/go-errors/errors v1.4.2 // indirect
+	github.com/go-errors/errors v1.4.2
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-playground/validator/v10 v10.19.0
 	github.com/gocarina/gocsv v0.0.0-20220707092902-b9da1f06c77e
@@ -122,7 +122,7 @@ require (
 require (
 	github.com/chainguard-dev/git-urls v1.0.2
 	github.com/go-sql-driver/mysql v1.7.1
-	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/rogpeppe/go-internal v1.11.0
 	golang.org/x/mod v0.17.0
 )
