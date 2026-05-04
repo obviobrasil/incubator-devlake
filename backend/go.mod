@@ -6,7 +6,7 @@ require (
 	github.com/cockroachdb/errors v1.11.1
 	github.com/gin-contrib/cors v1.6.0
 	github.com/gin-gonic/gin v1.9.1
-	github.com/go-errors/errors v1.4.2 // indirect
+	github.com/go-errors/errors v1.4.2
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-playground/validator/v10 v10.19.0
 	github.com/gocarina/gocsv v0.0.0-20220707092902-b9da1f06c77e
@@ -19,7 +19,7 @@ require (
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/panjf2000/ants/v2 v2.4.6
 	github.com/robfig/cron/v3 v3.0.0
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.1
 	github.com/spf13/afero v1.6.0 // indirect
 	github.com/spf13/cast v1.5.1
 	github.com/spf13/cobra v1.5.0
